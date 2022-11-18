@@ -64,7 +64,7 @@ app.post('/newstudents', (req,res) => {
         if (result) {
             res.send({
                 status: true,
-                message: 'Student created successfully'
+                message: 'Student Created Successfully'
             })
         } else {
             res.send({
@@ -94,7 +94,7 @@ app.put('/newstudents', (req,res) => {
                 if (result) {
                     res.send({
                         status: true,
-                        message: `Student created successfully with ID Number ${result.insertId}`
+                        message: `Student Created Successfully With ID Number ${result.insertId}`
                     })
                 } else {
                     res.send({
@@ -107,7 +107,7 @@ app.put('/newstudents', (req,res) => {
         } else if(result.affectedRows == 1){
             res.send({
                 status: true,
-                message: 'Student Updated successfully.'
+                message: 'Student Updated Successfully.'
             })
         } else {
             res.send({
@@ -117,6 +117,27 @@ app.put('/newstudents', (req,res) => {
         }
     });
 });
+
+
+//Delete student
+app.delete('/deletestudent/:id', (req,res) => {
+    //const user_data = req.body;
+    dbConn.query('DELETE FROM `students` WHERE id = ?', [req.params.id],  (err, result) => {
+        if (err) throw err
+        if (result) {
+            res.send({
+                status: true,
+                message: 'Student Deleted Successfully'
+            })
+        } else {
+            res.send({
+                status: false,
+                message: 'Something went wrong.'
+            })
+        }
+    });
+});
+
 
 app.listen(port, () => {
     console.log(`App listining on port ${port}`);
