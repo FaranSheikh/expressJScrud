@@ -76,7 +76,7 @@ app.post('/newstudents', (req,res) => {
 });
 
 
-//update student if not exit created student
+//update student if not exit created new student
 app.put('/newstudents', (req,res) => {
     const user_data = req.body;
     // console.log(user_data);
