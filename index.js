@@ -15,10 +15,11 @@ app.get('/',
         res.send('OK! Microservice is running...')
     })
 
-//Faran
+
 app.use(express.json());
 
-app.get('/students', (req, res) => {
+//get all students api
+app.get('/allstudents', (req, res) => {
     dbConn.query("SELECT * FROM `students`", (err, result) => { 
         if (err) throw err
         if (result) {
@@ -36,6 +37,26 @@ app.get('/students', (req, res) => {
 })
 
 
+//get single students api
+app.get('/singlestudent/:id', (req, res) => {
+    dbConn.query("SELECT * FROM `students` WHERE id = ?",[req.params.id], (err, result) => { 
+        if (err) throw err
+        if (result) {
+            res.send({
+                status: true,
+                data: result
+            })
+        } else {
+            res.send({
+                status: false,
+                message: 'Something went wrong.'
+            })
+        }
+    });
+})
+
+
+//Create new student
 app.post('/newstudents', (req,res) => {
     const user_data = req.body;
     dbConn.query('INSERT INTO `students` SET ?', user_data, function (err, result) {
@@ -55,10 +76,11 @@ app.post('/newstudents', (req,res) => {
 });
 
 
+//update student if not exit created student
 app.put('/newstudents', (req,res) => {
     const user_data = req.body;
     // console.log(user_data);
-    dbConn.query("UPDATE `students` SET ? WHERE id="+user_data.id, [user_data], function (err, result) {
+    dbConn.query("UPDATE `students` SET ? WHERE id="+user_data.id, [user_data], (err, result) => {
        // console.log(result);
         if (err) throw err
         if (result.affectedRows == 0) {
