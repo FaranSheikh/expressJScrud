@@ -39,7 +39,7 @@ app.get('/allstudents', (req, res) => {
 
 //get single students api
 app.get('/singlestudent/:id', (req, res) => {
-    dbConn.query("SELECT * FROM `students` WHERE id = ?",[req.params.id], (err, result) => { 
+    dbConn.query("SELECT * FROM `students` WHERE id = ?",[req.params.id], (err, result) => {    
         if (err) throw err
         if (result) {
             res.send({
@@ -57,9 +57,9 @@ app.get('/singlestudent/:id', (req, res) => {
 
 
 //Create new student
-app.post('/newstudents', (req,res) => {
+app.post('/createnewstudents', (req,res) => {
     const user_data = req.body;
-    dbConn.query('INSERT INTO `students` SET ?', user_data, function (err, result) {
+    dbConn.query('INSERT INTO `students` SET ?', user_data, (err, result) => {
         if (err) throw err
         if (result) {
             res.send({
@@ -77,7 +77,7 @@ app.post('/newstudents', (req,res) => {
 
 
 //update student if not exist create new student
-app.put('/newstudents', (req,res) => {
+app.put('/updatestudents', (req,res) => {
     const user_data = req.body;
     // console.log(user_data);
     dbConn.query("UPDATE `students` SET ? WHERE id="+user_data.id, [user_data], (err, result) => {
@@ -113,6 +113,26 @@ app.put('/newstudents', (req,res) => {
             res.send({
                 status: false,
                 message: 'Something Went Wrong.'
+            })
+        }
+    });
+});
+
+
+//Update student via patch method
+app.patch('/newstudents', (req,res) => {
+    const user_data = req.body;
+    dbConn.query('UPDATE `students` SET ? WHERE id = '+user_data.id,[user_data], (err, result) => {
+        if (err) throw err
+        if (result) {
+            res.send({
+                status: true,
+                message: 'Student Updated Successfully'
+            })
+        } else {
+            res.send({
+                status: false,
+                message: 'Something went wrong.'
             })
         }
     });
