@@ -155,8 +155,8 @@ app.delete('/deletestudent/:id', (req,res) => {
                 message: 'Something went wrong.'
             })
         }
-    });
-});
+    })
+})
 
 
 app.listen(port, () => {
